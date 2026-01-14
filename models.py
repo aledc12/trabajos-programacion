@@ -2,7 +2,7 @@
 # ================================================
 # Aquí irán las funciones relacionadas con la gestión interna de las tareas.
 # NO se usan clases Solo listas y diccionarios.
-#
+# ola
 # Cada tarea será un diccionario con la estructura:
 # {
 #     "descripcion": "texto",
