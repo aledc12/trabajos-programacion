@@ -16,7 +16,7 @@
 #   - mostrar_lista(tareas)
 #   - main()
 #
-# IMPORTANTE:Ale tontorron
+# IMPORTANTE:
 #   main() debe contener el bucle principal
 #   que permita al usuario interactuar hasta que elija salir.
 # =================================================
