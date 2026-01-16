@@ -22,7 +22,6 @@ def guardar_tareas(tareas, archivo="tareas.json"):
     Guarda la lista de tareas en formato JSON en 'archivo'.
     """
     archivo=json.dump (tareas)
-
     pass
 
 
@@ -34,5 +33,4 @@ def cargar_tareas(archivo="tareas.json"):
     json.load(archivo)
     if archivo == ():
         print (lista())
-
     pass
