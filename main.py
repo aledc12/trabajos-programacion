@@ -16,7 +16,7 @@
 #   - mostrar_lista(tareas)
 #   - main()
 #
-# IMPORTANTE: Madre mia
+# IMPORTANTE: Madre mia no mu mal
 #   main() debe contener el bucle principal
 #   que permita al usuario interactuar hasta que elija salir.
 # =================================================
