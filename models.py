@@ -19,9 +19,6 @@
 #   - obtener_tareas_completadas(tareas)
 # ================================================
 
-descripcion= "a"
-prioridad= 0
-completada= False
 def crear_tarea(descripcion, prioridad):
     
     """
@@ -33,9 +30,8 @@ def crear_tarea(descripcion, prioridad):
     return{
         "descripcion":descripcion,
         "prioridad": prioridad,
-        "Completada": False
+        "completada": False
     }
-    pass
 
 
 def añadir_tarea(tareas, descripcion, prioridad):
@@ -71,7 +67,6 @@ def obtener_tareas_pendientes(tareas):
     Debe devolver una lista de tareas cuyo campo 'completada' sea False.
     """
     return[tarea for tarea in tareas if not tarea["Completada"]]
-    pass
 
 
 def obtener_tareas_completadas(tareas):
@@ -79,4 +74,3 @@ def obtener_tareas_completadas(tareas):
     Debe devolver una lista de tareas cuyo campo 'completada' sea True.
     """
     return[tarea for tarea in tareas if tarea["Completada"]]
-    pass
