@@ -7,7 +7,7 @@
 #   - guardar_tareas(tareas, archivo="tareas.json")
 #   - cargar_tareas(archivo="tareas.json")
 #
-# PISTA: 
+# PISTA: te va o no te va zurmano?
 #   Usa json.dump() para guardar
 #   Usa json.load() para cargar
 #
