@@ -30,6 +30,7 @@ from models import (
 )
 
 from storage import guardar_tareas, cargar_tareas
+from storage_sqlite import obtener_conexion
 
 
 def mostrar_menu():
@@ -79,7 +80,9 @@ def main():
     """
     Bucle principal del programa.
     """
-    tareas = cargar_tareas()
+   # tareas = cargar_tareas()
+    conexion = obtener_conexion
+    tareas = obtener_tareas(conexion)
 
     while True:
         mostrar_menu()
