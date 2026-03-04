@@ -21,7 +21,7 @@ import os
 DATABASE_FILE = "tareas.db"
 
 
-def crear_bbdd():
+def crear_tarea():
     """
     Crea la base de datos SQLite y la tabla de tareas si no existen.
     """
@@ -61,6 +61,30 @@ def obtener_conexion():
     if not os.path.exists(DATABASE_FILE):
         crear_bbdd()
     return conectar_bbdd()
+
+def obtener_tareas():
+    """
+    Obtiene todas las tareas almacenadas en la base de datos.
+    Retorna una lista de diccionarios representando cada tarea.
+    """
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    
+    cursor.execute("SELECT * FROM tareas")
+    filas = cursor.fetchall()
+    
+    tareas = []
+    for fila in filas:
+        tarea = {
+            "id": fila["id"],
+            "descripcion": fila["descripcion"],
+            "prioridad": fila["prioridad"],
+            "completada": bool(fila["completada"])
+        }
+        tareas.append(tarea)
+    
+    conexion.close()
+    return tareas
 
 
 # Inicializar la BD al importar el módulo
