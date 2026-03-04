@@ -62,6 +62,30 @@ def obtener_conexion():
         crear_bbdd()
     return conectar_bbdd()
 
+def obtener_tareas():
+    """
+    Obtiene todas las tareas almacenadas en la base de datos.
+    Retorna una lista de diccionarios representando cada tarea.
+    """
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    
+    cursor.execute("SELECT * FROM tareas")
+    filas = cursor.fetchall()
+    
+    tareas = []
+    for fila in filas:
+        tarea = {
+            "id": fila["id"],
+            "descripcion": fila["descripcion"],
+            "prioridad": fila["prioridad"],
+            "completada": bool(fila["completada"])
+        }
+        tareas.append(tarea)
+    
+    conexion.close()
+    return tareas
+
 
 # Inicializar la BD al importar el módulo
 if __name__ != "__main__":
