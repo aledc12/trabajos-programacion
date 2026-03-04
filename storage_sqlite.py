@@ -21,7 +21,7 @@ import os
 DATABASE_FILE = "tareas.db"
 
 
-def crear_bbdd():
+def crear_tarea():
     """
     Crea la base de datos SQLite y la tabla de tareas si no existen.
     """
