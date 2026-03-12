@@ -35,9 +35,15 @@ from storage_sqlite import obtener_conexion
 
 def mostrar_menu():
     """
-    Muestra el menú principal con las opciones disponibles.
+    Muestra por pantalla el menú de opciones.
     """
-    pass
+    print("\n--- MENÚ ---")
+    print("1. Añadir tarea")
+    print("2. Ver tareas pendientes")
+    print("3. Ver tareas completadas")
+    print("4. Marcar tarea como completada")
+    print("5. Eliminar tarea")
+    print("0. Salir")
 
 
 def pedir_entero(mensaje):
