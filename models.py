@@ -79,4 +79,10 @@ def obtener_tareas_completadas(tareas):
     """
     Debe devolver una lista de tareas cuyo campo 'completada' sea True.
     """
-    return[tarea for tarea in tareas if tarea["Completada"]]
+    pendientes = []
+
+    for t in tareas:
+        if t["completada"] == True:
+            pendientes.append(t)
+
+    return pendientes
