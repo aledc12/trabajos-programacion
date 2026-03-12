@@ -74,24 +74,7 @@ def main():
     Aquí se inicializa la lista de tareas,
     se muestran opciones y se llaman funciones según la elección del usuario.
     """
-    pass
-
-
-# Ejecutar el programa solo si este archivo se ejecuta directamente
-if __name__ == "__main__":
-    main()
-
-
-# main.py
-# =================================================
-# Interacción con el usuario
-# =================================================
-
-def main():
-    """
-    Bucle principal del programa.
-    """
-   # tareas = cargar_tareas()
+    # tareas = cargar_tareas()
     conexion = obtener_conexion
     tareas = obtener_tareas(conexion)
 
@@ -141,3 +124,4 @@ def main():
 # Ejecutar el programa solo si este archivo se ejecuta directamente
 if __name__ == "__main__":
     main()
+
