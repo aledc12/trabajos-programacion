@@ -41,7 +41,7 @@ def añadir_tarea(tareas, descripcion, prioridad):
     """
     tarea = crear_tarea(descripcion,prioridad)
     tareas.append(tarea)
-    pass
+    
 
 
 def marcar_completada(tareas, indice):
@@ -50,7 +50,7 @@ def marcar_completada(tareas, indice):
     para la tarea en la posición 'indice'.
     """
     tareas[indice]["completada"]= True
-    pass
+    
 
 
 def eliminar_tarea(tareas, indice):
@@ -59,7 +59,7 @@ def eliminar_tarea(tareas, indice):
     dentro de la lista 'tareas'.
     """
     tareas.pop(indice)
-    pass
+    
 
 
 def obtener_tareas_pendientes(tareas):
