@@ -66,7 +66,13 @@ def obtener_tareas_pendientes(tareas):
     """
     Debe devolver una lista de tareas cuyo campo 'completada' sea False.
     """
-    return[tarea for tarea in tareas if not tarea["Completada"]]
+    pendientes = []
+
+    for t in tareas:
+        if t["completada"] == False:
+            pendientes.append(t)
+
+    return pendientes
 
 
 def obtener_tareas_completadas(tareas):
