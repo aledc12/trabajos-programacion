@@ -64,7 +64,8 @@ def mostrar_lista(tareas):
     Muestra por pantalla las tareas que reciba como lista.
     Debe incluir su índice y datos principales.
     """
-    pass
+    for i, tarea in enumerate(tareas):
+        print(f"{i}. {tarea}")
 
 
 def main():
