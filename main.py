@@ -68,6 +68,11 @@ def pedir_entero(mensaje):
         except ValueError:
             print("Por favor, introduce un número entero válido.")
 
+def pedir_string(mensaje):
+    """
+    Pide al usuario una cadena de texto.
+    """
+    return input(mensaje)           
 
 def mostrar_lista(tareas):
     """
