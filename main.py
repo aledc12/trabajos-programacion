@@ -52,7 +52,11 @@ def pedir_entero(mensaje):
     Si el usuario introduce algo incorrecto, debe repetirse hasta que sea válido.
     Usa try/except.
     """
-    pass
+    while True:
+        try:
+            return int(input(mensaje))
+        except ValueError:
+            print("Por favor, introduce un número entero válido.")
 
 
 def mostrar_lista(tareas):
