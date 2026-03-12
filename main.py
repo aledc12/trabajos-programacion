@@ -45,6 +45,16 @@ def mostrar_menu():
     print("5. Eliminar tarea")
     print("0. Salir")
 
+def obtener_tareas(conexion):
+    """
+    Obtiene la lista de tareas desde la base de datos.
+    """
+    conexion = obtener_conexion() 
+    cursor = conexion.cursor()
+    cursor.execute("SELECT * FROM tareas")
+    filas = cursor.fetchall()
+    tareas = [dict(fila) for fila in filas]  # Convertir a lista de diccionarios
+    return tareas
 
 def pedir_entero(mensaje):
     """
