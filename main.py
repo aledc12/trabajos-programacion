@@ -92,8 +92,9 @@ def main():
         opcion = pedir_entero("Elige una opción: ")
 
         if opcion == 1:
-            titulo = input("Título de la tarea: ")
-            añadir_tarea(tareas, titulo)
+            descripcion = input("Descripción de la tarea: ")
+            prioridad = pedir_entero("Prioridad de la tarea (número): ")
+            añadir_tarea(tareas, descripcion, prioridad)
             guardar_tareas(tareas)
             print("Tarea añadida.")
 
