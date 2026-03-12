@@ -49,7 +49,7 @@ def marcar_completada(tareas, indice):
     Debe cambiar el valor 'completada' a True
     para la tarea en la posición 'indice'.
     """
-    tareas[indice]["Completada"]= True
+    tareas[indice]["completada"]= True
     pass
 
 
