@@ -22,15 +22,19 @@
 # =================================================
 
 from models import (
-    añadir_tarea,
-    marcar_completada,
-    eliminar_tarea,
     obtener_tareas_pendientes,
     obtener_tareas_completadas
 )
 
-from storage import guardar_tareas, cargar_tareas
-from storage_sqlite import obtener_conexion
+from storage_sqlite import (
+    obtener_tareas,
+    obtener_tareas_pendientes as obtener_tareas_pendientes_bd,
+    obtener_tareas_completadas as obtener_tareas_completadas_bd,
+    añadir_tarea_bd,
+    marcar_completada_bd,
+    eliminar_tarea_bd,
+    obtener_conexion
+)
 
 
 def mostrar_menu():
@@ -44,17 +48,6 @@ def mostrar_menu():
     print("4. Marcar tarea como completada")
     print("5. Eliminar tarea")
     print("0. Salir")
-
-def obtener_tareas(conexion):
-    """
-    Obtiene la lista de tareas desde la base de datos.
-    """
-    conexion = obtener_conexion() 
-    cursor = conexion.cursor()
-    cursor.execute("SELECT * FROM tareas")
-    filas = cursor.fetchall()
-    tareas = [dict(fila) for fila in filas]  # Convertir a lista de diccionarios
-    return tareas
 
 def pedir_entero(mensaje):
     """
@@ -73,8 +66,13 @@ def mostrar_lista(tareas):
     Muestra por pantalla las tareas que reciba como lista.
     Debe incluir su índice y datos principales.
     """
-    for i, tarea in enumerate(tareas):
-        print(f"{i}. {tarea}")
+    if not tareas:
+        print("No hay tareas.")
+        return
+    
+    for tarea in tareas:
+        estado = "✓ Completada" if tarea.get("completada") else "○ Pendiente"
+        print(f"  ID: {tarea.get('id')} | {tarea.get('descripcion')} | Prioridad: {tarea.get('prioridad')} | {estado}")
 
 
 def main():
@@ -83,9 +81,9 @@ def main():
     Aquí se inicializa la lista de tareas,
     se muestran opciones y se llaman funciones según la elección del usuario.
     """
-    # tareas = cargar_tareas()
-    conexion = obtener_conexion
-    tareas = obtener_tareas(conexion)
+    print("✓ Conectando a la base de datos...")
+    obtener_conexion()  # Verifica/crea la BD
+    print("✓ Base de datos preparada.\n")
 
     while True:
         mostrar_menu()
@@ -94,44 +92,46 @@ def main():
         if opcion == 1:
             descripcion = input("Descripción de la tarea: ")
             prioridad = pedir_entero("Prioridad de la tarea (número): ")
-            añadir_tarea(tareas, descripcion, prioridad)
-            guardar_tareas(tareas)
-            print("Tarea añadida.")
+            añadir_tarea_bd(descripcion, prioridad)
+            print("✓ Tarea añadida correctamente.\n")
 
         elif opcion == 2:
             print("\n--- TAREAS PENDIENTES ---")
-            pendientes = obtener_tareas_pendientes(tareas)
-            mostrar_lista(pendientes)
+            tareas = obtener_tareas_pendientes_bd()
+            mostrar_lista(tareas)
 
         elif opcion == 3:
             print("\n--- TAREAS COMPLETADAS ---")
-            completadas = obtener_tareas_completadas(tareas)
-            mostrar_lista(completadas)
+            tareas = obtener_tareas_completadas_bd()
+            mostrar_lista(tareas)
 
         elif opcion == 4:
+            print("\n--- MARCAR TAREA COMO COMPLETADA ---")
+            tareas = obtener_tareas_pendientes_bd()
             mostrar_lista(tareas)
-            indice = pedir_entero("Índice de la tarea a completar: ")
-            marcar_completada(tareas, indice)
-            guardar_tareas(tareas)
-            print("Tarea marcada como completada.")
+            if tareas:
+                tarea_id = pedir_entero("Introduce el ID de la tarea a marcar como completada: ")
+                marcar_completada_bd(tarea_id)
+                print("✓ Tarea marcada como completada.\n")
 
         elif opcion == 5:
+            print("\n--- ELIMINAR TAREA ---")
+            tareas = obtener_tareas()
             mostrar_lista(tareas)
-            indice = pedir_entero("Índice de la tarea a eliminar: ")
-            eliminar_tarea(tareas, indice)
-            guardar_tareas(tareas)
-            print("Tarea eliminada.")
+            if tareas:
+                tarea_id = pedir_entero("Introduce el ID de la tarea a eliminar: ")
+                eliminar_tarea_bd(tarea_id)
+                print("✓ Tarea eliminada correctamente.\n")
 
         elif opcion == 0:
-            guardar_tareas(tareas)
-            print("Saliendo del programa...")
+            print("¡Hasta luego!")
             break
 
         else:
-            print("Opción no válida.")
+            print("Opción no válida. Intenta de nuevo.\n")
 
 
-# Ejecutar el programa solo si este archivo se ejecuta directamente
 if __name__ == "__main__":
     main()
+
 

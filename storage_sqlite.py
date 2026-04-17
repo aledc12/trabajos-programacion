@@ -87,7 +87,96 @@ def obtener_tareas():
     return tareas
 
 
+def obtener_tareas_pendientes():
+    """
+    Obtiene todas las tareas pendientes (completada = False).
+    """
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    
+    cursor.execute("SELECT * FROM tareas WHERE completada = 0")
+    filas = cursor.fetchall()
+    
+    tareas = []
+    for fila in filas:
+        tarea = {
+            "id": fila["id"],
+            "descripcion": fila["descripcion"],
+            "prioridad": fila["prioridad"],
+            "completada": bool(fila["completada"])
+        }
+        tareas.append(tarea)
+    
+    conexion.close()
+    return tareas
+
+
+def obtener_tareas_completadas():
+    """
+    Obtiene todas las tareas completadas (completada = True).
+    """
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    
+    cursor.execute("SELECT * FROM tareas WHERE completada = 1")
+    filas = cursor.fetchall()
+    
+    tareas = []
+    for fila in filas:
+        tarea = {
+            "id": fila["id"],
+            "descripcion": fila["descripcion"],
+            "prioridad": fila["prioridad"],
+            "completada": bool(fila["completada"])
+        }
+        tareas.append(tarea)
+    
+    conexion.close()
+    return tareas
+
+
+def añadir_tarea_bd(descripcion, prioridad):
+    """
+    Añade una nueva tarea a la base de datos.
+    """
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    
+    cursor.execute(
+        "INSERT INTO tareas (descripcion, prioridad, completada) VALUES (?, ?, 0)",
+        (descripcion, prioridad)
+    )
+    
+    conexion.commit()
+    conexion.close()
+
+
+def marcar_completada_bd(tarea_id):
+    """
+    Marca una tarea como completada en la base de datos.
+    """
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    
+    cursor.execute("UPDATE tareas SET completada = 1 WHERE id = ?", (tarea_id,))
+    
+    conexion.commit()
+    conexion.close()
+
+
+def eliminar_tarea_bd(tarea_id):
+    """
+    Elimina una tarea de la base de datos.
+    """
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    
+    cursor.execute("DELETE FROM tareas WHERE id = ?", (tarea_id,))
+    
+    conexion.commit()
+    conexion.close()
+
+
 # Inicializar la BD al importar el módulo
 if __name__ != "__main__":
     crear_bbdd()
-  
