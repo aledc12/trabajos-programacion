@@ -16,7 +16,7 @@
 #   - mostrar_lista(tareas)
 #   - main()
 #
-# IMPORTANTE:
+# IMPORTANTE: Madre mia no mu mal
 #   main() debe contener el bucle principal
 #   que permita al usuario interactuar hasta que elija salir.
 # =================================================
@@ -25,6 +25,7 @@ from models import (
     obtener_tareas_pendientes,
     obtener_tareas_completadas
 )
+
 
 from storage_sqlite import (
     obtener_tareas,
