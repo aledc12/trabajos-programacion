@@ -41,7 +41,7 @@ def añadir_tarea(tareas, descripcion, prioridad):
     """
     tarea = crear_tarea(descripcion,prioridad)
     tareas.append(tarea)
-    pass
+    
 
 
 def marcar_completada(tareas, indice):
@@ -49,8 +49,8 @@ def marcar_completada(tareas, indice):
     Debe cambiar el valor 'completada' a True
     para la tarea en la posición 'indice'.
     """
-    tareas[indice]["Completada"]= True
-    pass
+    tareas[indice]["completada"]= True
+    
 
 
 def eliminar_tarea(tareas, indice):
@@ -59,18 +59,30 @@ def eliminar_tarea(tareas, indice):
     dentro de la lista 'tareas'.
     """
     tareas.pop(indice)
-    pass
+    
 
 
 def obtener_tareas_pendientes(tareas):
     """
     Debe devolver una lista de tareas cuyo campo 'completada' sea False.
     """
-    return[tarea for tarea in tareas if not tarea["Completada"]]
+    pendientes = []
+
+    for t in tareas:
+        if t["completada"] == False:
+            pendientes.append(t)
+
+    return pendientes
 
 
 def obtener_tareas_completadas(tareas):
     """
     Debe devolver una lista de tareas cuyo campo 'completada' sea True.
     """
-    return[tarea for tarea in tareas if tarea["Completada"]]
+    pendientes = []
+
+    for t in tareas:
+        if t["completada"] == True:
+            pendientes.append(t)
+
+    return pendientes
