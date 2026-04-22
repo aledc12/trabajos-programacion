@@ -16,7 +16,7 @@
 #   - mostrar_lista(tareas)
 #   - main()
 #
-# IMPORTANTE: Madre mia no mu mal
+# IMPORTANTE:
 #   main() debe contener el bucle principal
 #   que permita al usuario interactuar hasta que elija salir.
 # =================================================
@@ -39,9 +39,15 @@ from storage_sqlite import (
 
 def mostrar_menu():
     """
-    Muestra el menú principal con las opciones disponibles.
+    Muestra por pantalla el menú de opciones.
     """
-    pass
+    print("\n--- MENÚ ---")
+    print("1. Añadir tarea")
+    print("2. Ver tareas pendientes")
+    print("3. Ver tareas completadas")
+    print("4. Marcar tarea como completada")
+    print("5. Eliminar tarea")
+    print("0. Salir")
 
 def pedir_entero(mensaje):
     """
@@ -49,8 +55,11 @@ def pedir_entero(mensaje):
     Si el usuario introduce algo incorrecto, debe repetirse hasta que sea válido.
     Usa try/except.
     """
-    pass
-
+    while True:
+        try:
+            return int(input(mensaje))
+        except ValueError:
+            print("Por favor, introduce un número entero válido.")         
 
 def mostrar_lista(tareas):
     """
@@ -124,5 +133,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
