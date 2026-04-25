@@ -19,6 +19,8 @@
 #   - obtener_tareas_completadas(tareas)
 # ================================================
 
+from datetime import date
+
 def crear_tarea(descripcion, prioridad):
     
     """
@@ -27,10 +29,12 @@ def crear_tarea(descripcion, prioridad):
     - prioridad: número entero
     - completada: inicialmente False
     """
+
     return{
         "descripcion":descripcion,
         "prioridad": prioridad,
-        "completada": False
+        "completada": False,
+        "fecha": date.today()
     }
 
 

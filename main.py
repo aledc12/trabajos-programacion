@@ -21,6 +21,12 @@
 #   que permita al usuario interactuar hasta que elija salir.
 # =================================================
 
+VERDE = "\033[92m"
+AMARILLO = "\033[93m"
+ROJO = "\033[91m"
+RESET = "\033[0m"
+AZUL = "\033[94m"
+
 from models import (
     obtener_tareas_pendientes,
     obtener_tareas_completadas
@@ -63,17 +69,13 @@ def pedir_entero(mensaje):
             print("Por favor, introduce un número entero válido.")         
 
 def mostrar_lista(tareas):
-    """
-    Muestra por pantalla las tareas que reciba como lista.
-    Debe incluir su índice y datos principales.
-    """
-    if not tareas:
-        print("No hay tareas.")
-        return
-    
-    for tarea in tareas:
-        estado = "✓ Completada" if tarea.get("completada") else "○ Pendiente"
-        print(f"  ID: {tarea.get('id')} | {tarea.get('descripcion')} | Prioridad: {tarea.get('prioridad')} | {estado}")
+    for t in tareas:
+
+        fecha_formateada = t.get('fecha').strftime("%d/%m/%Y")
+
+        estado = f"{VERDE}✅{RESET}" if t['completada'] else f"{AMARILLO}❌{RESET}"
+        
+        print(f"{AZUL}[{t['id']}]{RESET} {t['descripcion'][:20]:<20} | "f"Prio: {t['prioridad']} | {estado} | {fecha_formateada}")
 
 
 def main():

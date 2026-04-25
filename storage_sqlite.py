@@ -16,6 +16,7 @@
 
 import sqlite3
 import os
+from datetime import datetime
 
 
 DATABASE_FILE = "tareas.db"
@@ -34,7 +35,8 @@ def crear_bbdd():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             descripcion TEXT NOT NULL,
             prioridad INTEGER,
-            completada BOOLEAN DEFAULT 0
+            completada BOOLEAN DEFAULT 0,
+            fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     """)
     
@@ -62,6 +64,7 @@ def obtener_conexion():
         crear_bbdd()
     return conectar_bbdd()
 
+
 def obtener_tareas():
     """
     Obtiene todas las tareas almacenadas en la base de datos.
@@ -69,23 +72,24 @@ def obtener_tareas():
     """
     conexion = obtener_conexion()
     cursor = conexion.cursor()
-    
-    cursor.execute("SELECT * FROM tareas")
+
+    cursor.execute("SELECT * FROM tareas ORDER BY prioridad ASC")
     filas = cursor.fetchall()
     
     tareas = []
     for fila in filas:
-        tarea = {
+        fecha_texto = fila["fecha_creacion"]
+        fecha_obj = datetime.strptime(fecha_texto, "%Y-%m-%d %H:%M:%S")
+
+        tareas.append({
             "id": fila["id"],
             "descripcion": fila["descripcion"],
             "prioridad": fila["prioridad"],
-            "completada": bool(fila["completada"])
-        }
-        tareas.append(tarea)
-    
+            "completada": bool(fila["completada"]),
+            "fecha": fecha_obj 
+        })
     conexion.close()
     return tareas
-
 
 def obtener_tareas_pendientes():
     """
@@ -93,23 +97,26 @@ def obtener_tareas_pendientes():
     """
     conexion = obtener_conexion()
     cursor = conexion.cursor()
-    
-    cursor.execute("SELECT * FROM tareas WHERE completada = 0")
+
+    cursor.execute("SELECT * FROM tareas WHERE completada = 0 ORDER BY prioridad ASC")
     filas = cursor.fetchall()
     
     tareas = []
     for fila in filas:
+        fecha_texto = fila["fecha_creacion"]
+        fecha_obj = datetime.strptime(fecha_texto, "%Y-%m-%d %H:%M:%S")
+
         tarea = {
             "id": fila["id"],
             "descripcion": fila["descripcion"],
             "prioridad": fila["prioridad"],
-            "completada": bool(fila["completada"])
+            "completada": bool(fila["completada"]),
+            "fecha": fecha_obj 
         }
         tareas.append(tarea)
     
     conexion.close()
     return tareas
-
 
 def obtener_tareas_completadas():
     """
@@ -117,23 +124,26 @@ def obtener_tareas_completadas():
     """
     conexion = obtener_conexion()
     cursor = conexion.cursor()
-    
-    cursor.execute("SELECT * FROM tareas WHERE completada = 1")
+
+    cursor.execute("SELECT * FROM tareas WHERE completada = 1 ORDER BY prioridad ASC")
     filas = cursor.fetchall()
     
     tareas = []
     for fila in filas:
+        fecha_texto = fila["fecha_creacion"]
+        fecha_obj = datetime.strptime(fecha_texto, "%Y-%m-%d %H:%M:%S")
+
         tarea = {
             "id": fila["id"],
             "descripcion": fila["descripcion"],
             "prioridad": fila["prioridad"],
-            "completada": bool(fila["completada"])
+            "completada": bool(fila["completada"]),
+            "fecha": fecha_obj
         }
         tareas.append(tarea)
     
     conexion.close()
     return tareas
-
 
 def añadir_tarea_bd(descripcion, prioridad):
     """
