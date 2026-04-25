@@ -1,285 +1,170 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Gestor de Tareas</title>
-
-<style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  height: 100vh;
-  display: flex;
-}
-
-/* LAYOUT PRINCIPAL */
-.app {
-  display: flex;
-  width: 100%;
-  height: 100vh;
-}
-
-/* SIDEBAR */
-.sidebar {
-  width: 250px;
-  background: linear-gradient(180deg, #667eea, #764ba2);
-  color: white;
-  padding: 20px;
-}
-
-.sidebar h1 {
-  margin-top: 0;
-}
-
-.filter {
-  margin-top: 30px;
-}
-
-.filter button {
-  display: block;
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.2);
-  color: white;
-  cursor: pointer;
-  text-align: left;
-  transition: 0.3s;
-}
-
-.filter button.active {
-  background: white;
-  color: #667eea;
-  font-weight: bold;
-}
-
-/* CONTENIDO */
-.main {
-  flex: 1;
-  padding: 30px;
-  background: #f4f6f9;
-  overflow-y: auto;
-}
-
-/* INPUT */
-.task-input {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.task-input input {
-  flex: 1;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-}
-
-/* PRIORIDADES */
-.priority-selector {
-  display: flex;
-  gap: 5px;
-}
-
-.priority-btn {
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  color: white;
-  opacity: 0.6;
-}
-
-.priority-btn.active {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.p1 { background: #28a745; }
-.p2 { background: #6fbd44; }
-.p3 { background: #ffc107; color: black; }
-.p4 { background: #fd7e14; }
-.p5 { background: #dc3545; }
-
-.add-btn {
-  background: #667eea;
-  color: white;
-  border: none;
-  padding: 12px 15px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-/* LISTA */
-.task {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.task.completed {
-  opacity: 0.6;
-  text-decoration: line-through;
-  background: #d4edda;
-}
-
-.priority-label {
-  padding: 4px 8px;
-  border-radius: 6px;
-  color: white;
-  margin-left: 10px;
-  font-size: 12px;
-}
-
-.actions button {
-  border: none;
-  padding: 6px 10px;
-  margin-left: 5px;
-  border-radius: 6px;
-  cursor: pointer;
-  color: white;
-}
-
-.complete-btn { background: #17a2b8; }
-.delete-btn { background: #dc3545; }
-
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestor de Tareas</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
-
-<div class="app">
-
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <h1>Tareas</h1>
-
-    <div class="filter">
-      <button id="filter-all" class="active" onclick="setFilter('all')">Todas</button>
-      <button id="filter-pending" onclick="setFilter('pending')">Pendientes</button>
-      <button id="filter-completed" onclick="setFilter('completed')">Completadas</button>
-    </div>
-  </div>
-
-  <!-- CONTENIDO -->
-  <div class="main">
-
-    <div class="task-input">
-      <input type="text" id="taskText" placeholder="Nueva tarea...">
-
-      <div class="priority-selector">
-        <button class="priority-btn p1" onclick="setPriority(1)">1</button>
-        <button class="priority-btn p2" onclick="setPriority(2)">2</button>
-        <button class="priority-btn p3" onclick="setPriority(3)">3</button>
-        <button class="priority-btn p4" onclick="setPriority(4)">4</button>
-        <button class="priority-btn p5 active" onclick="setPriority(5)">5</button>
-      </div>
-
-      <button class="add-btn" onclick="addTask()">+</button>
-    </div>
-
-    <div id="taskList"></div>
-
-  </div>
-
-</div>
-
-<script>
-let tasks = [];
-let currentFilter = 'all';
-let currentPriority = 5;
-
-function setPriority(p) {
-  currentPriority = p;
-  document.querySelectorAll('.priority-btn').forEach(btn => btn.classList.remove('active'));
-  document.querySelector('.p' + p).classList.add('active');
-}
-
-function addTask() {
-  const text = document.getElementById('taskText').value;
-  if (text.trim() === '') return;
-
-  tasks.push({
-    text,
-    priority: currentPriority,
-    completed: false
-  });
-
-  document.getElementById('taskText').value = '';
-  renderTasks();
-}
-
-function toggleTask(index) {
-  tasks[index].completed = !tasks[index].completed;
-  renderTasks();
-}
-
-function deleteTask(index) {
-  tasks.splice(index, 1);
-  renderTasks();
-}
-
-function setFilter(filter) {
-  currentFilter = filter;
-
-  document.querySelectorAll('.filter button').forEach(btn => btn.classList.remove('active'));
-  document.getElementById('filter-' + filter).classList.add('active');
-
-  renderTasks();
-}
-
-function getPriorityColor(priority) {
-  const colors = {
-    1: '#28a745',
-    2: '#6fbd44',
-    3: '#ffc107',
-    4: '#fd7e14',
-    5: '#dc3545'
-  };
-  return colors[priority];
-}
-
-function renderTasks() {
-  const list = document.getElementById('taskList');
-  list.innerHTML = '';
-
-  let filtered = tasks.filter(task => {
-    if (currentFilter === 'pending') return !task.completed;
-    if (currentFilter === 'completed') return task.completed;
-    return true;
-  });
-
-  filtered.forEach((task, index) => {
-    const div = document.createElement('div');
-    div.className = 'task' + (task.completed ? ' completed' : '');
-
-    div.innerHTML = `
+  <div class="app">
+    <!-- Encabezado -->
+    <header class="header">
       <div>
-        ${task.text}
-        <span class="priority-label" style="background:${getPriorityColor(task.priority)}">
-          P${task.priority}
-        </span>
+        <h1>Gestor de tareas</h1>
+        <p class="subtitle">Organiza tu día con calma y claridad</p>
       </div>
+      <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema">
+        <span class="icon-sun">☀️</span>
+        <span class="icon-moon">🌙</span>
+      </button>
+    </header>
 
-      <div class="actions">
-        <button class="complete-btn" onclick="toggleTask(${index})">✓</button>
-        <button class="delete-btn" onclick="deleteTask(${index})">✕</button>
-      </div>
-    `;
+    <div class="layout">
+      <!-- Sidebar: formulario -->
+      <aside class="sidebar">
+        <div class="card">
+          <h2>Nueva tarea</h2>
+          <form id="taskForm" class="form">
+            <label for="taskInput">Tarea</label>
+            <input
+              id="taskInput"
+              type="text"
+              placeholder="Ej. Estudiar matemáticas"
+              required
+            />
 
-    list.appendChild(div);
-  });
-}
-</script>
+            <label for="priorityInput">Prioridad (1 = alta, 5 = baja)</label>
+            <select id="priorityInput">
+              <option value="1">1 — Muy alta</option>
+              <option value="2">2 — Alta</option>
+              <option value="3" selected>3 — Media</option>
+              <option value="4">4 — Baja</option>
+              <option value="5">5 — Muy baja</option>
+            </select>
 
+            <button type="submit" class="btn btn-primary">Añadir tarea</button>
+          </form>
+        </div>
+      </aside>
+
+      <!-- Main: filtros + lista -->
+      <main class="main">
+        <div class="filters">
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="pending">Pendientes</button>
+            <button class="filter-btn" data-filter="completed">Completadas</button>
+            <button class="filter-btn" data-filter="all">Todas</button>
+          </div>
+          <span id="counter" class="counter">0 tareas</span>
+        </div>
+
+        <ul id="taskList" class="task-list"></ul>
+
+        <p id="emptyState" class="empty-state">No hay tareas para mostrar.</p>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('taskForm');
+    const input = document.getElementById('taskInput');
+    const priorityInput = document.getElementById('priorityInput');
+    const taskList = document.getElementById('taskList');
+    const counter = document.getElementById('counter');
+    const emptyState = document.getElementById('emptyState');
+    const themeToggle = document.getElementById('themeToggle');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+
+    let tasks = [];
+    let currentFilter = 'pending';
+
+    // Tema
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+    });
+
+    // Filtros
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        render();
+      });
+    });
+
+    // Añadir tarea
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+      tasks.unshift({
+        id: Date.now(),
+        text,
+        priority: Number(priorityInput.value),
+        completed: false,
+      });
+      input.value = '';
+      priorityInput.value = '3';
+      render();
+    });
+
+    function toggleTask(id) {
+      tasks = tasks.map((t) =>
+        t.id === id ? { ...t, completed: !t.completed } : t
+      );
+      render();
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter((t) => t.id !== id);
+      render();
+    }
+
+    function getFiltered() {
+      if (currentFilter === 'pending') return tasks.filter((t) => !t.completed);
+      if (currentFilter === 'completed') return tasks.filter((t) => t.completed);
+      return tasks;
+    }
+
+    function render() {
+      const filtered = getFiltered();
+      taskList.innerHTML = '';
+
+      filtered.forEach((task) => {
+        const li = document.createElement('li');
+        li.className = 'task' + (task.completed ? ' completed' : '');
+        li.dataset.priority = task.priority;
+
+        li.innerHTML = `
+          <button class="check" aria-label="Completar">
+            ${task.completed ? '✓' : ''}
+          </button>
+          <div class="task-content">
+            <span class="task-text">${escapeHtml(task.text)}</span>
+            <span class="badge">P${task.priority}</span>
+          </div>
+          <button class="delete" aria-label="Eliminar">✕</button>
+        `;
+
+        li.querySelector('.check').addEventListener('click', () => toggleTask(task.id));
+        li.querySelector('.delete').addEventListener('click', () => deleteTask(task.id));
+        taskList.appendChild(li);
+      });
+
+      counter.textContent =
+        filtered.length === 1 ? '1 tarea' : `${filtered.length} tareas`;
+      emptyState.style.display = filtered.length === 0 ? 'block' : 'none';
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    render();
+  </script>
 </body>
 </html>
